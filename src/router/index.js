@@ -1,11 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import MainPage from '@/page/mainPage/lightbrother/mainPage'
-import Login from '@/page/login/yyl/login'
-import Register from '@/page/login/yyl/register'
-import KnowledgeStruct from '@/page/knowledgeStruct/ob/knowledgeStruct'
-import KnowledgeCard from '@/page/knowledgeStruct/ob/knowledgeCard'
-import Topic from '@/page/topic/jack/Topic'
+import KnowledgeStruct from '@/page/knowledgeStruct/knowledgeStruct'
+import KnowledgeCard from '@/page/knowledgeStruct/knowledgeCard'
+import MainPage from '@/page/mainPage/mainPage'
+
+
 
 Vue.use(Router)
 
@@ -17,27 +16,13 @@ export default new Router({
       component: MainPage
     },
     {
-      path: '/login',
-      name: 'login',
-      component: Login
-    },
-    {
-      path: '/register',
-      name: 'register',
-      component: Register
-    },
-    {
-      path: '/knowledgeStruct',
+      path: '/123',
       name: 'knowledgeStruct',
       component: KnowledgeStruct
     },{
       path: '/knowledgeCard',
       name: 'knowledgeCard',
       component: KnowledgeCard
-    },{
-      path: '/topic',
-      name: 'topic',
-      component: Topic
     }
   ]
 })

@@ -1,7 +1,7 @@
 <template lang="html">
   <div class="knowledgeCard">
     <el-container>
-      <el-header height="80px"><Nav></Nav></el-header>
+      <el-header height="80px"><Head></Head></el-header>
       <el-main>
         <div class="card">
           <div class="title"><b>知识点1：HTML基础</b></div>
@@ -32,11 +32,11 @@
 </template>
 
 <script>
-import Nav from '@/components/common/Nav'
+import Head from '@/components/common/Head'
 export default {
   name:'knowledgeCard',
   components:{
-    Nav,
+    Head,
   },
   data(){
     return{

@@ -7,10 +7,6 @@
       @open="handleOpen"
       @close="handleClose">
       <el-submenu index="1">
-        <template slot="title" :class="{active:show}" @click="show =!show">
-          <span  :class="{active:show}" @click="show =!show">{{item.title}}</span>
-        </template>
-          <el-menu-item index="">第一部分：HTML基础<i class="el-submenu__icon-arrow el-icon-arrow-right"></i></el-menu-item>
         <template slot="title">
           <span>{{item.title}}</span>
         </template>
@@ -30,7 +26,6 @@ export default {
   name:'LearningPath',
   data(){
     return{
-      show:false,
       items:[
         {title:'步骤一：HTML基础',id:1,},
         {title:'步骤二：HTML基础',id:2,},
@@ -52,9 +47,6 @@ export default {
 
 
 <style>
-.LearningPath .active{
-  background-color: #caf6e7 !important;
-}
 .el-submenu.is-opened div:first-child{
   background-color: #caf6e7;
 }

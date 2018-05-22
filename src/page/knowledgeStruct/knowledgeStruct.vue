@@ -1,7 +1,7 @@
 <template lang="html">
   <div class="knowledgeStruct">
     <el-container>
-      <el-header height="80px"><Nav></Nav></el-header>
+      <el-header height="80px"><Head></Head></el-header>
       <el-main>
         <el-tabs v-model="activeName" @tab-click="handleClick">
           <el-tab-pane label="全部" name="first"><AllData></AllData></el-tab-pane>
@@ -21,12 +21,12 @@
 </template>
 
 <script>
-import Nav from '@/components/common/Nav'
-import AllData from '@/components/knowledgeStruct/ob/AllData'
+import Head from '@/components/common/Head'
+import AllData from '@/components/knowledgeStruct/AllData'
 export default {
   name:'knowledgeStruct',
   components:{
-    Nav,
+    Head,
     AllData
   },
   data(){

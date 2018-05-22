@@ -99,7 +99,7 @@
 </template>
 
 <script>
-import LearningPath from '@/components/knowledgeStruct/ob/LearningPath'
+import LearningPath from '@/components/knowledgeStruct/LearningPath'
 export default {
   name:'AllData',
   components:{
