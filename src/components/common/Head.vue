@@ -3,7 +3,7 @@
       <img src="@/img/yuanjihua.jpg">
       <div class="navbar">
         <ul>
-          <li v-for='(list,index) in lists' :class="{active:index==isActive}" @click="changeClass(index)">
+          <li v-for='(list,index) in lists' :class="{active:index==isActive}" >
             <router-link :to="{name:list.name}"><b>{{list.text}}</b></router-link>
           </li>
         </ul>
@@ -25,24 +25,22 @@
 <script>
 export default {
   name:'Head',
+  props:['isActive'],
   data(){
     return{
-      isActive:0,
-      lists:[{text:'首页',name:'mainPage'},{text:'知识体系',name:'knowledgeStruct'},{text:'活动',name:'subject'},{text:'文章',name:'article'},{text:'话题',name:'topic'}]
+      lists:[{text:'首页',name:'mainPage'},{text:'知识体系',name:'knowledgeStruct'},{text:'活动',name:'subject'},{text:'文章',name:'articles'},{text:'话题',name:'topic'}]
     }
   },
   methods:{
-    changeClass(index){
-     this.isActive=index;
-    },
+
   }
 }
 </script>
 
 
 <style scoped>
-.head .active{
-  background-color: red;
+.head .active a{
+  color: red;
 }
 .head{
   width: 100%;
@@ -74,7 +72,7 @@ export default {
 .head ul li{
   list-style: none;
   float: left;
-  width: 80px;
+  padding: 0 20px;
   text-align: center;
 }
 .head ul a.active{

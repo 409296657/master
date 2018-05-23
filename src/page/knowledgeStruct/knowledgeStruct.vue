@@ -1,7 +1,7 @@
 <template lang="html">
   <div class="knowledgeStruct">
     <el-container>
-      <el-header height="80px"><Head></Head></el-header>
+      <el-header height="80px"><Head  isActive="1"></Head></el-header>
       <el-main>
         <el-tabs v-model="activeName" @tab-click="handleClick">
           <el-tab-pane label="全部" name="first"><AllData></AllData></el-tab-pane>

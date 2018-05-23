@@ -1,7 +1,7 @@
 <template lang="html">
   <div class="knowledgeCard">
     <el-container>
-      <el-header height="80px"><Head></Head></el-header>
+      <el-header height="80px"><Head  isActive="1"></Head></el-header>
       <el-main>
         <div class="card">
           <div class="title"><b>知识点1：HTML基础</b></div>

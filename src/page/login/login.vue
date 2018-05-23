@@ -3,8 +3,7 @@
     <el-container>
       <el-header height="80px"><Head isActive="0"></Head></el-header>
       <el-main>
-        <Banner></Banner>
-        <HotArticles></HotArticles>
+
       </el-main>
      </el-container>
    <el-footer></el-footer>
@@ -18,14 +17,10 @@
 
 <script>
 import Head from '@/components/common/Head'
-import Banner from '@/components/mainpage/Banner'
-import HotArticles from '@/components/mainpage/HotArticles'
 export default {
   name:'mainPage',
   components:{
     Head,
-    Banner,
-    HotArticles,
   },
   data(){
     return{
