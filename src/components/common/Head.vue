@@ -1,6 +1,6 @@
 <template lang="html">
   <div class="head">
-      <img src="@/img/yuanjihua.jpg">
+      <img src="../../images/yuanjihua.jpg">
       <div class="navbar">
         <ul>
           <li v-for='(list,index) in lists' :class="{active:index==isActive}" >

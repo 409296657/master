@@ -3,7 +3,8 @@
     <el-container>
       <el-header height="80px"><Head isActive="3"></Head></el-header>
       <el-main>
-
+        <Banner></Banner>
+        <Articles></Articles>
       </el-main>
      </el-container>
    <el-footer></el-footer>
@@ -17,16 +18,28 @@
 
 <script>
 import Head from '@/components/common/Head'
+import Banner from '@/components/mainpage/Banner'
+import Articles from '@/components/article/Articles'
 export default {
   name:'articles',
   components:{
     Head,
+    Banner,
+    Articles
   },
   data(){
     return{
+
     }
   },
   methods:{
+    shopCart(){
+			let that=this;
+			that.$ajax({
+				method:"get",
+				url:"http://vue.tyqprivateweb.cn:35002/vue/article.php",
+			})
+		},
 
   }
 }
