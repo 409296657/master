@@ -6,6 +6,7 @@ import MainPage from '@/page/mainPage/mainPage'
 import Article from '@/page/article/article'
 import Subject from '@/page/subject/subject'
 import Topic from '@/page/topic/topic'
+import Register from '@/page/login/register'
 
 
 
@@ -38,6 +39,10 @@ export default new Router({
       path: '/topic',
       name: 'topic',
       component: Topic
+    },{
+      path: '/register',
+      name: 'register',
+      component: Register
     }
   ]
 })
