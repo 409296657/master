@@ -67,5 +67,9 @@ export default {
   display:flex;
   justify-content: space-between;
 }
+.login a{
+  color: inherit;
+  text-decoration: none;
+}
 
 </style>

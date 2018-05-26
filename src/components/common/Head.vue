@@ -12,7 +12,7 @@
             <Login></Login>
           </div>
           <div class="border"></div>
-          <div class="register">
+          <div class="register-button">
             <router-link :to="{ name: 'register'}">注册</router-link>
           </div>
         </div>

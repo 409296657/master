@@ -13,7 +13,6 @@ Vue.config.productionTip = false
 Vue.prototype.ajax = axios
 
 Vue.use(ElementUI)
-
 Vue.use(getSignure)
 
 /* eslint-disable no-new */
