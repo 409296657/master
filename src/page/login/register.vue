@@ -3,7 +3,7 @@
     <div class="head">
       <div><router-link :to="{ name: 'mainPage'}"><img src="../../images/yuanjihua.jpg"></router-link>
       <span>账号注册</span></div>
-      <div>已有账号？现在就<el-button type="primary" plain>登录</el-button></div>
+      <div>已有账号？现在就<el-button type="primary" plain>登 录</el-button></div>
 
     </div>
     <div class="content">
