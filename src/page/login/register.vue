@@ -45,13 +45,13 @@ export default {
     }
   },
   methods:{
-    userRegister:function(){
-      ajax({
+    userRegister(){
+      this.axios({
         method:"POST",
         url:"http://www.ftusix.com/static/data/register.php",
         data:{
-          "mobile":"phoneNum",     //  注册手机号
-          "pwd":"psw",            //  注册密码
+          "mobile":this.phoneNum,     //  注册手机号
+          "pwd":this.psw,            //  注册密码
           "sms_code":"123456",
         }
       })
@@ -107,7 +107,7 @@ export default {
 }
 .register .content{
   padding-top: 50px;
-  margin-left: 300px;
+  margin-left: 270px;
 }
 .register .content .item{
   height: 40px;

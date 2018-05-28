@@ -9,13 +9,13 @@
       :lock-scroll="false"
       center>
       <form class="">
-        <input type="text" name="" placeholder="请输入手机号码">
-        <input type="password" name="" placeholder="请输入密码">
+        <input type="text" name="" placeholder="请输入手机号码" v-model="mobile">
+        <input type="password" name="" placeholder="请输入密码" v-model="psw">
         <div>
           <router-link :to="{ name: ''}">忘记密码？</router-link>
           <router-link :to="{ name: 'register'}">注册账号</router-link>
         </div>
-        <el-button type="primary" @click="centerDialogVisibleLogin = false">登 录</el-button>
+        <el-button type="primary" @click="login">登 录</el-button>
       </form>
     </el-dialog>
 
@@ -29,12 +29,37 @@ export default {
   name:'login',
   data(){
     return{
+      mobile:'',
+      psw:'',
       centerDialogVisibleRegister: false,
       centerDialogVisibleLogin: false,
     }
   },
   methods:{
+    login(){
+      this.axios({
+        method:"POST",
+        url:"http://www.ftusix.com/static/data/login.php",
+        data:{
+          "mobile":this.mobile,
+          "pwd":this.psw,
+        }
+      })
+      .then((res)=>{
+        console.log(res)
+        if(res.data.status==1){
+          // this.centerDialogVisibleLogin = false
+          let userData = res.data.data[0];
+          this.common.setCookie('useID',userData.nick_name,30)
+          this.$router.push({name:'mainPage'});
+        }else{
+          alert(res.data.info)
+        }
+      })
+      .catch(function(err){
 
+      })
+    }
   }
 }
 </script>

@@ -7,10 +7,12 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import getSignure from '@/utils/getSignure'
 import axios from 'axios'
+import common from '@/config/common'
 
 
 Vue.config.productionTip = false
-Vue.prototype.ajax = axios
+Vue.prototype.axios = axios
+Vue.prototype.common = common
 
 Vue.use(ElementUI)
 Vue.use(getSignure)

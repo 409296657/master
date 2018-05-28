@@ -7,7 +7,8 @@
             <router-link :to="{name:list.name}"><b>{{list.text}}</b></router-link>
           </li>
         </ul>
-        <div class="land">
+        <div class="user" v-if="!land">111</div>
+        <div class="land" v-if="land">
           <div class="login">
             <Login></Login>
           </div>
@@ -32,6 +33,7 @@ export default {
   props:['isActive'],
   data(){
     return{
+      land:true,
       centerDialogVisibleRegister: false,
       centerDialogVisibleLogin: false,
       lists:[{text:'首页',name:'mainPage'},{text:'知识体系',name:'knowledgeStruct'},{text:'活动',name:'subject'},{text:'文章',name:'articles'},{text:'话题',name:'topic'}]
@@ -39,6 +41,11 @@ export default {
   },
   methods:{
 
+  },
+  mounted(){
+    if(this.common.getCookie('useID')){
+      this.land=false;
+    }
   }
 }
 </script>
@@ -86,6 +93,9 @@ export default {
 }
 .head .land{
   float: right;
+  font-size: 16px;
+}
+.head .user{
   font-size: 16px;
 }
 .head .land .border{
