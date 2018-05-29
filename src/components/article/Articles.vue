@@ -11,7 +11,7 @@
               <div class="list">
                 <div class="article-title">
                   <div class="article-type"><router-link :to="{ name: ''}">[javascript]</router-link></div>
-                  <div class="title"><router-link :to="{ name: ''}">到底写的什么几把</router-link></div>
+                  <div class="title"><router-link :to="{ name: ''}">到底写什么好</router-link></div>
                 </div>
                 <div class="article-info">
                   <div class="article-user">OB</div>

@@ -7,7 +7,7 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import getSignure from '@/utils/getSignure'
 import axios from 'axios'
-import common from '@/config/common'
+import common from '@/utils/common'
 
 
 Vue.config.productionTip = false

@@ -7,10 +7,19 @@
             <router-link :to="{name:list.name}"><b>{{list.text}}</b></router-link>
           </li>
         </ul>
-        <div class="user" v-if="!land">111</div>
+        <div class="user" v-if="!land">
+          <el-dropdown>
+            <span class="el-dropdown-link">
+            <i class="el-icon-arrow-down el-icon--right"></i>{{userId}}
+            </span>
+            <el-dropdown-menu slot="dropdown">
+              <div class="quit" @click='quit'>退出登陆</div>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
         <div class="land" v-if="land">
           <div class="login">
-            <Login></Login>
+            <Login v-on:logining="change"></Login>
           </div>
           <div class="border"></div>
           <div class="register-button">
@@ -33,6 +42,7 @@ export default {
   props:['isActive'],
   data(){
     return{
+      userId:'',
       land:true,
       centerDialogVisibleRegister: false,
       centerDialogVisibleLogin: false,
@@ -40,11 +50,18 @@ export default {
     }
   },
   methods:{
-
+    quit:function(){
+      this.common.deleteCookie('useID'),
+      this.land = true;
+    },
+    change:function(data){
+      this.land = data;
+    }
   },
   mounted(){
     if(this.common.getCookie('useID')){
       this.land=false;
+      this.userId=this.common.getCookie('useID');
     }
   }
 }
@@ -135,6 +152,19 @@ export default {
   width: 300px;
   display:flex;
   justify-content: space-between;
+}
+.quit{
+  font-size: 14px;
+  text-align: center;
+  width: 80px;
+  cursor: pointer;
+}
+.el-dropdown-menu{
+  padding: 5px 0;
+}
+.head .el-dropdown{
+  width: 80px;
+  text-align: center;
 }
 
 </style>

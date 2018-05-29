@@ -48,10 +48,11 @@ export default {
       .then((res)=>{
         console.log(res)
         if(res.data.status==1){
-          // this.centerDialogVisibleLogin = false
+          this.centerDialogVisibleLogin = false
           let userData = res.data.data[0];
-          this.common.setCookie('useID',userData.nick_name,30)
+          this.common.setCookie('useID',userData.nick_name,'30')
           this.$router.push({name:'mainPage'});
+          this.$emit("logining",false)
         }else{
           alert(res.data.info)
         }

@@ -7,22 +7,23 @@
       </div>
       <div class="login-part"><div class="login-text">已有账号？现在就</div><Login></Login></div>
     </div>
+
     <div class="content">
-      <div class="item">
-        <div>用户名</div>
-        <input type="text" placeholder="请设置用户名" v-model="userId">
-        <div class="tips"><div class="text"><div><p>设置后不可更改</p><p>中英文均可，最长14个英文或7个汉字</p></div></div></div>
-      </div>
-      <div class="item">
-        <div>手机号</div>
-        <input type="text" placeholder="可用于登录和找回密码" v-model="phoneNum">
-        <div class="tips"><div class="text"><div><p>输入中国大陆手机号，其他用户不可见</p></div></div></div>
-      </div>
-      <div class="item">
-        <div>密码</div>
-        <input type="password" placeholder="请设置登陆密码" v-model="psw">
-      </div>
-      <el-button type="primary" @click="userRegister">注 册</el-button>
+      <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" label-width="100px" class="demo-ruleForm">
+        <el-form-item label="手机号码" prop="phoneNum">
+          <el-input v-model.number="ruleForm2.phoneNum"></el-input>
+        </el-form-item>
+        <el-form-item label="密码" prop="pass">
+          <el-input type="password" v-model="ruleForm2.pass" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="确认密码" prop="checkPass">
+          <el-input type="password" v-model="ruleForm2.checkPass" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="submitForm('ruleForm2')">提交</el-button>
+          <el-button @click="resetForm('ruleForm2')">重置</el-button>
+        </el-form-item>
+      </el-form>
     </div>
 
   </div>
@@ -38,31 +39,98 @@ export default {
     Login,
   },
   data(){
+    var checkPhoneNum = (rule, value, callback) => {
+        if (!value) {
+          return callback(new Error('手机号码不能为空'));
+        }
+        setTimeout(() => {
+          if (!this.common.isvalidPhone(value)) {
+              callback(new Error('请输入正确的11位手机号码'));
+            } else {
+              callback();
+            }
+        }, 300);
+      };
+      var validatePass = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请输入密码'));
+        } else {
+          if (this.ruleForm2.checkPass !== '') {
+            this.$refs.ruleForm2.validateField('checkPass');
+          }
+          callback();
+        }
+      };
+      var validatePass2 = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请再次输入密码'));
+        } else if (value !== this.ruleForm2.pass) {
+          callback(new Error('两次输入密码不一致!'));
+        } else {
+          callback();
+        }
+      };
     return{
-      userId:'',
-      phoneNum:'',
-      psw:'',
+      ruleForm2: {
+          pass: '',
+          checkPass: '',
+          phoneNum: ''
+        },
+      rules2: {
+        pass: [
+          { validator: validatePass, trigger: 'blur' }
+        ],
+        checkPass: [
+          { validator: validatePass2, trigger: 'blur' }
+        ],
+        phoneNum: [
+          { validator: checkPhoneNum, trigger: 'blur' }
+        ]
+      }
     }
   },
   methods:{
-    userRegister(){
-      this.axios({
-        method:"POST",
-        url:"http://www.ftusix.com/static/data/register.php",
-        data:{
-          "mobile":this.phoneNum,     //  注册手机号
-          "pwd":this.psw,            //  注册密码
-          "sms_code":"123456",
+    submitForm(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.axios({
+            method:"POST",
+            url:"http://www.ftusix.com/static/data/register.php",
+            data:{
+              "mobile":this.ruleForm2.phoneNum,     //  注册手机号
+              "pwd":this.ruleForm2.pass,            //  注册密码
+              "sms_code":"123456",
+            }
+          })
+          .then((res)=>{
+            console.log(res)
+            if(res.data.status==1){
+              let userData = res.data.data;
+              this.common.setCookie('useID',userData.nick_name,'30');
+              alert(res.data.info);
+              setTimeout(()=>{
+                this.$router.push({name:'mainPage'});
+              },2000)
+            }else{
+              alert(res.data.info)
+            }
+          })
+          .catch(function(err){
+
+          })
+        } else {
+          console.log('error submit!!');
+          return false;
         }
-      })
-      .then(function(res){
-        console.log(res)
-      })
-      .catch(function(err){
+      });
+    },
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
+    },
 
-      })
 
-    }
+
+
   }
 }
 </script>
@@ -107,46 +175,9 @@ export default {
 }
 .register .content{
   padding-top: 50px;
-  margin-left: 270px;
+  width: 400px;
+  margin: 0 auto;
 }
-.register .content .item{
-  height: 40px;
-  display: flex;
-  margin: 20px 0;
-}
-.register .content .item>div:first-child{
-  width: 65px;
-  text-align: right;
-  margin-right: 5px;
-  font-size: 16px;
-  line-height: 40px;
-}
-.register .content .item input{
-  width: 350px;
-  margin-right: 10px;
-  text-indent: 15px;
-}
-.register .content .item>div:last-child{
-  font-size: 12px;
-  line-height: 16px;
-  color: #666;
-}
-.register .content .item .tips{
-  display: none;
-}
-.register .content .item .tips .text{
-  display: flex;
-  align-items: center;
-  height: 100%;
-}
-.register .content .item input:focus + .tips{
-  display: block;
-}
-.register .content .el-button{
-  width: 350px;
-  height: 50px;
-  margin-left: 70px;
-  margin-top: 20px;
-}
+
 
 </style>

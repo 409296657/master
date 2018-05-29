@@ -17,6 +17,11 @@ const util = {
 		this.setCookie(name, '', -1);
 	},
 
+	isvalidPhone:function(str) {//验证手机号码是否正确
+	  const reg = /^1[3|4|5|7|8][0-9]\d{8}$/
+	  return reg.test(str)
+	},
+
 }
 
 export default util;
