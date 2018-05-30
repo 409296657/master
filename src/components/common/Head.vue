@@ -13,7 +13,9 @@
             <i class="el-icon-arrow-down el-icon--right"></i>{{userId}}
             </span>
             <el-dropdown-menu slot="dropdown">
-              <div class="quit" @click='quit'>退出登陆</div>
+              <div class="userinfo"><router-link :to="{ name: 'user', params: { activeName: '1' }}">用户信息</router-link></div>
+              <div class="userinfo"><router-link :to="{ name: 'user', params: { activeName: '2' }}">修改密码</router-link></div>
+              <div class="userinfo" @click='quit'>退出登陆</div>
             </el-dropdown-menu>
           </el-dropdown>
         </div>
@@ -55,7 +57,9 @@ export default {
       this.land = true;
     },
     change:function(data){
-      this.land = data;
+      console.log(data)
+      this.land = data[0];
+      this.userId = data[1];
     }
   },
   mounted(){
@@ -153,11 +157,19 @@ export default {
   display:flex;
   justify-content: space-between;
 }
-.quit{
+.userinfo{
   font-size: 14px;
   text-align: center;
   width: 80px;
   cursor: pointer;
+  padding: 5px 0;
+}
+.userinfo:hover{
+  background-color: #e3e3e3;
+}
+.userinfo a{
+  text-decoration: none;
+  color: inherit;
 }
 .el-dropdown-menu{
   padding: 5px 0;

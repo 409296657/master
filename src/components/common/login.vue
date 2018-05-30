@@ -52,7 +52,7 @@ export default {
           let userData = res.data.data[0];
           this.common.setCookie('useID',userData.nick_name,'30')
           this.$router.push({name:'mainPage'});
-          this.$emit("logining",false)
+          this.$emit("logining",[false,this.common.getCookie('useID')])
         }else{
           alert(res.data.info)
         }

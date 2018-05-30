@@ -7,6 +7,7 @@ import Article from '@/page/article/article'
 import Subject from '@/page/subject/subject'
 import Topic from '@/page/topic/topic'
 import Register from '@/page/login/register'
+import User from '@/page/user/user'
 
 
 
@@ -43,6 +44,10 @@ export default new Router({
       path: '/register',
       name: 'register',
       component: Register
+    },{
+      path: '/user',
+      name: 'user',
+      component: User
     }
   ]
 })
