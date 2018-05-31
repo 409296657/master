@@ -7,7 +7,13 @@ import Article from '@/page/article/article'
 import Subject from '@/page/subject/subject'
 import Topic from '@/page/topic/topic'
 import Register from '@/page/login/register'
+import UserInfo from '@/page/user/userInfo'
+import MyCollection from '@/page/user/mycollection'
 import User from '@/page/user/user'
+import MyNote from '@/page/user/mynote'
+import MyTask from '@/page/user/mytask'
+import ResetPwd from '@/page/user/resetpwd'
+import MyMessage from '@/page/user/mymessage'
 
 
 
@@ -46,8 +52,38 @@ export default new Router({
       component: Register
     },{
       path: '/user',
-      name: 'user',
-      component: User
-    }
+      name: '',
+      component: User,
+      children:[
+        {
+          path: 'userinfo',
+          name: 'userinfo',
+          component: UserInfo
+        },{
+          path: 'mycollection',
+          name: 'mycollection',
+          component: MyCollection
+        },{
+          path: 'mynote',
+          name: 'mynote',
+          component: MyNote
+        },
+        {
+          path: 'mytask',
+          name: 'mytask',
+          component: MyTask
+        },
+        {
+          path: 'resetpwd',
+          name: 'resetpwd',
+          component: ResetPwd
+        },
+        {
+          path: 'mymessage',
+          name: 'mymessage',
+          component: MyMessage
+        },
+      ]
+    },
   ]
 })

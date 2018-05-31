@@ -13,8 +13,12 @@
             <i class="el-icon-arrow-down el-icon--right"></i>{{userId}}
             </span>
             <el-dropdown-menu slot="dropdown">
-              <div class="userinfo"><router-link :to="{ name: 'user', params: { activeName: '1' }}">用户信息</router-link></div>
-              <div class="userinfo"><router-link :to="{ name: 'user', params: { activeName: '2' }}">修改密码</router-link></div>
+              <div class="userinfo"><router-link :to="{ name: 'userinfo'}">用户信息</router-link></div>
+              <div class="userinfo"><router-link :to="{ name: 'resetpwd'}">修改密码</router-link></div>
+              <div class="userinfo"><router-link :to="{ name: 'mynote'}">我的帖子</router-link></div>
+              <div class="userinfo"><router-link :to="{ name: 'mycollection'}">我的收藏</router-link></div>
+              <div class="userinfo"><router-link :to="{ name: 'mymessage'}">我的消息</router-link></div>
+              <div class="userinfo"><router-link :to="{ name: 'mytask'}">我的任务</router-link></div>
               <div class="userinfo" @click='quit'>退出登陆</div>
             </el-dropdown-menu>
           </el-dropdown>
@@ -55,6 +59,7 @@ export default {
     quit:function(){
       this.common.deleteCookie('useID'),
       this.land = true;
+      this.$router.push({name:'mainPage'})
     },
     change:function(data){
       console.log(data)
