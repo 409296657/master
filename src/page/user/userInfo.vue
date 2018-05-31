@@ -10,10 +10,21 @@
           <div class="content">
             <ul>
               <li class="title">个人信息</li>
-              <li><img src="" alt="">更换头像</li>
-              <li><span>注册手机号</span><el-input type="text"></el-input></li>
-              <li><span>昵称</span><el-input type="text" :value="this.common.getCookie('useID')"></el-input></li>
-              <li><span>性别</span>男<input type="radio" name="sex">女<input type="radio" name="sex"></li>
+              <li class="upload">
+                <img src="" alt="DC8B19B5BD6447A56146B8BB09E85BCC.jpg">
+                <el-upload
+                  class="avatar-uploader"
+                  action="http://www.ftusix.com/static/data/upload.php"
+                  :show-file-list="false"
+                  :on-success="handleAvatarSuccess"
+                  :before-upload="beforeAvatarUpload">
+                  <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                </el-upload>
+              </li>
+              <li><span>注册手机号</span>{{mobile}}</li>
+              <li><span>昵称</span><el-input type="text" :value="this.common.getCookie('useInfo').nick_name"></el-input></li>
+              <li><span>性别</span>男<input type="radio" v-model="sex" name="sex" value="0">女<input type="radio" v-model="sex" name="sex" value="1"></li>
             </ul>
             <el-button type="primary">提交</el-button>
           </div>
@@ -40,11 +51,27 @@ export default {
   },
   data(){
     return{
-
+      sex:'',
+      mobile:this.common.getCookie('useInfo').mobile,
+      imageUrl: '',
     }
   },
   methods:{
+    handleAvatarSuccess(res, file) {
+      this.imageUrl = URL.createObjectURL(file.raw);
+    },
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === 'image/jpeg';
+      const isLt2M = file.size / 1024 / 1024 < 2;
 
+      if (!isJPG) {
+        this.$message.error('上传头像图片只能是 JPG 格式!');
+      }
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 2MB!');
+      }
+      return isJPG && isLt2M;
+    }
   },
 }
 </script>
@@ -78,6 +105,7 @@ export default {
   height: 80px;
   line-height: 80px;
   border-bottom: 1px solid #666;
+  box-sizing: border-box;
 }
 .userInfo .el-main .content li .el-input{
   display: inline-block;
@@ -94,4 +122,39 @@ export default {
   display: inline-block;
   width: 100px;
 }
+.userInfo .el-main .content li.upload{
+  padding-top:8px;
+}
+.userInfo .el-main .content li.upload img{
+  float: left;
+  overflow: hidden;
+}
+.userInfo .avatar-uploader{
+  height: 100%;
+}
+.userInfo .avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    height: 60px;
+    line-height: 60px;
+  }
+  .userInfo .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+  .userInfo .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 60px;
+    height: 60px;
+    line-height: 60px;
+    text-align: center;
+  }
+  .userInfo .avatar {
+    width: 60px;
+    height: 60px;
+    display: block;
+  }
 </style>

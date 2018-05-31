@@ -57,20 +57,19 @@ export default {
   },
   methods:{
     quit:function(){
-      this.common.deleteCookie('useID'),
+      this.common.deleteCookie('useInfo'),
       this.land = true;
       this.$router.push({name:'mainPage'})
     },
     change:function(data){
-      console.log(data)
       this.land = data[0];
-      this.userId = data[1];
+      this.userId = data[1].nick_name;
     }
   },
   mounted(){
-    if(this.common.getCookie('useID')){
+    if(this.common.getCookie('useInfo')){
       this.land=false;
-      this.userId=this.common.getCookie('useID');
+      this.userId=this.common.getCookie('useInfo').nick_name;
     }
   }
 }

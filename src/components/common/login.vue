@@ -50,8 +50,9 @@ export default {
         if(res.data.status==1){
           this.centerDialogVisibleLogin = false
           let userData = res.data.data[0];
-          this.common.setCookie('useID',userData.nick_name,'30')
-          this.$emit("logining",[false,this.common.getCookie('useID')])
+          this.common.setCookie('useInfo',userData,'30')
+          console.log(this.common.getCookie('useID'))
+          this.$emit("logining",[false,this.common.getCookie('useInfo')])
         }else{
           alert(res.data.info)
         }
