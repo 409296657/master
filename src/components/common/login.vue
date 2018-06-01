@@ -51,7 +51,6 @@ export default {
           this.centerDialogVisibleLogin = false
           let userData = res.data.data[0];
           this.common.setCookie('useInfo',userData,'30')
-          console.log(this.common.getCookie('useID'))
           this.$emit("logining",[false,this.common.getCookie('useInfo')])
         }else{
           alert(res.data.info)

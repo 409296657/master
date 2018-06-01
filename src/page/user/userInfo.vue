@@ -1,17 +1,17 @@
 <template lang="html">
   <div class="userInfo">
     <el-container>
-      <el-header height="80px"><Head isActive="-1"></Head></el-header>
+      <el-header height="80px"><Head :isActive="-1"></Head></el-header>
       <el-container class="border">
         <el-aside width="180px">
           <List isActive="0"></List>
         </el-aside>
         <el-main>
-          <div class="content">
+          <div class="content" v-if="edit">
             <ul>
               <li class="title">个人信息</li>
               <li class="upload">
-                <img src="" alt="DC8B19B5BD6447A56146B8BB09E85BCC.jpg">
+                <img src="" alt="">
                 <el-upload
                   class="avatar-uploader"
                   action="http://www.ftusix.com/static/data/upload.php"
@@ -23,10 +23,23 @@
                 </el-upload>
               </li>
               <li><span>注册手机号</span>{{mobile}}</li>
-              <li><span>昵称</span><el-input type="text" :value="this.common.getCookie('useInfo').nick_name"></el-input></li>
-              <li><span>性别</span>男<input type="radio" v-model="sex" name="sex" value="0">女<input type="radio" v-model="sex" name="sex" value="1"></li>
+              <li><span>昵称</span><el-input type="text" v-model="nick_name" ></el-input></li>
+              <li><span>性别</span>男<input type="radio" v-model="sex" name="sex" value="1">女<input type="radio" v-model="sex" name="sex" value="0"></li>
             </ul>
-            <el-button type="primary">提交</el-button>
+            <el-button type="primary" @click="save">保存</el-button>
+          </div>
+
+          <div class="content" v-if="!edit">
+            <ul>
+              <li class="title">个人信息</li>
+              <li class="upload">
+                <img src="" alt="">
+              </li>
+              <li><span>注册手机号</span>{{mobile}}</li>
+              <li><span>昵称</span>{{name}}</li>
+              <li><span>性别</span><span v-if="sex==1">男</span><span v-if="sex==0">女</span></li>
+            </ul>
+            <el-button type="primary" @click="edit=true">编辑</el-button>
           </div>
         </el-main>
       </el-container>
@@ -51,9 +64,13 @@ export default {
   },
   data(){
     return{
-      sex:'',
+      nick_name:'',
+      edit:false,
+      sex:this.common.getCookie('useInfo').sex,
+      name:this.common.getCookie('useInfo').nick_name,
       mobile:this.common.getCookie('useInfo').mobile,
       imageUrl: '',
+      token:this.common.getCookie('useInfo').token,
     }
   },
   methods:{
@@ -71,8 +88,36 @@ export default {
         this.$message.error('上传头像图片大小不能超过 2MB!');
       }
       return isJPG && isLt2M;
+    },
+    save(){
+      this.axios({
+        method:"POST",
+        url:"http://www.ftusix.com/static/data/update.php",
+        data:{
+          "sex":this.sex,     //  性别
+          "nick_name":this.nick_name,   //  昵称
+          "token":this.token,
+        }
+      })
+      .then((res)=>{
+        console.log(res)
+        if(res.data.status == 1){
+          this.common.deleteCookie('useInfo');
+          this.common.setCookie('useInfo',res.data.data,'30');
+
+          this.edit = false;
+        }else{
+          alert(res.data.info)
+        }
+      })
+      .catch((err)=>{
+
+      })
     }
   },
+  updated(){
+    this.name = this.common.getCookie('useInfo').nick_name;
+  }
 }
 </script>
 
