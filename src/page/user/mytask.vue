@@ -7,7 +7,13 @@
           <List isActive="5"></List>
         </el-aside>
         <el-main>
-          1
+          <div class="content">
+            <el-tabs v-model="activeName" @tab-click="handleClick">
+              <el-tab-pane label="进行中" name="first"></el-tab-pane>
+              <el-tab-pane label="已完成" name="second"></el-tab-pane>
+              <el-tab-pane label="未通过" name="third"></el-tab-pane>
+            </el-tabs>
+          </div>
         </el-main>
       </el-container>
      </el-container>
@@ -31,11 +37,13 @@ export default {
   },
   data(){
     return{
-
+      activeName: 'first'
     }
   },
   methods:{
-
+    handleClick(tab, event) {
+        console.log(tab, event);
+      }
   }
 }
 </script>
@@ -62,5 +70,17 @@ export default {
 }
 .mytask .el-main{
   margin-top: 10px;
+    padding:0 20px;
+}
+.mytask .el-main .el-tabs__item{
+  width: 100px;
+  padding: 0 20px !important;
+  text-align: center;
+}
+.mytask .el-main .el-tabs__active-bar{
+  display: none;
+}
+.mytask .el-main .el-tabs__item.is-active{
+  color: red;
 }
 </style>

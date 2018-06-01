@@ -3,7 +3,7 @@
     <div class="th">
       <div class="userid">作者</div><div class="time">发表时间</div>
     </div>
-    <el-tabs v-model="activeName" @tab-click="handleClick">
+    <el-tabs v-model="activeName">
       <el-tab-pane label="所有文章" name="first">
         <div class="content">
           <ul>
@@ -14,7 +14,7 @@
                   <div class="title"><router-link :to="{ name: ''}">到底写什么好</router-link></div>
                 </div>
                 <div class="article-info">
-                  <div class="article-user">OB</div>
+                  <div class="article-user"  @click="show">OB</div>
                   <div class="article-time">2018/05/24 16：47</div>
                 </div>
               </div>
@@ -44,9 +44,24 @@ export default {
     }
   },
   methods:{
-    handleClick(tab, event) {
-      console.log(tab, event);
-    },
+    show(){
+      this.axios({
+        method:"POST",
+        url:"http://www.ftusix.com/static/data/topicList.php",
+        data:{
+          "type":0,    //类型，0为全部 ，如果index为true则1.html 2.php 3.java     index为false则 1.经验分享 2.入门学习 3.成果分享,
+          "sort":"hot",  //排序
+          "page":null,   //页码 null则为第一页默认页
+          "index":false,  //是否为首页列表
+        }
+      })
+      .then((res)=>{
+        console.log(res)
+      })
+      .catch((err)=>{
+
+      })
+    }
   }
 }
 </script>
