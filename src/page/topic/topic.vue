@@ -5,10 +5,32 @@
       <el-main>
         <div class="container">
           <div class="nodes">
+            <div class="button" :class="{active:nodeid==''}" @click="nodeid=''">全部</div>
             <div class="button" v-for="node in nodeList" :class="{active:node.id==nodeid}" @click="nodeid=node.id">
               <router-link :to="{ path: 'topic/node'+node.id}">{{node.name}}</router-link>
             </div>
           </div>
+          <div class="content">
+            <div class="list" v-for="(list,index) in lists">
+              <div class="text">
+                <div class="img">
+                  <img :src="list.user.avatar_url">
+                </div>
+                <div class="details">
+                  <div class="title"><a :href="list.address" target="_Blank">{{list.title}}</a></div>
+                  <div class="author">
+                    <router-link :to="{ name: '', params: {} }">{{list.node_name}}</router-link>&nbsp;·&nbsp;
+                    <router-link :to="{ name: '', params: {} }">{{list.user.login}}</router-link>&nbsp;·&nbsp;
+                    {{formTimeToData[index]}}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <el-pagination
+            layout="prev, pager, next"
+            :total="1000">
+          </el-pagination>
         </div>
       </el-main>
      </el-container>
@@ -30,9 +52,11 @@ export default {
   },
   data(){
     return{
-      nodeid:1,
+      nodeid:'',
       nodeList:[],
       access_token:'',
+      lists:[],
+      formTimeToData:[],
     }
   },
   methods:{
@@ -73,12 +97,19 @@ export default {
       url:'https://diycode.cc/api/v3/news.json',
       params:{
         "node_id":"",
-        "offset":"1",
-        "limit":'10',
+        "offset":"",
+        "limit":'20',
       },
     })
     .then((res)=>{
       console.log(res)
+      this.lists = res.data;
+      for (var i = 0; i < res.data.length; i++) {
+        let tt = res.data[i].created_at;
+        let t = Date.parse(tt);
+        let rt = this.common.formTimeToData(t);
+        this.formTimeToData[i]=rt;
+      }
     })
     .catch((err)=>{
       console.log(err)
@@ -117,6 +148,7 @@ export default {
 .topic .container .nodes{
   padding: 20px 15px;
   background-color: #f9f9f9;
+  border-bottom: 1px solid #c2d5e3;
 }
 .topic .container .nodes .button{
   display: inline-block;
@@ -128,6 +160,8 @@ export default {
   border-radius: 10px;
   margin-right: 15px;
   margin-bottom: 15px;
+  color: #fff;
+  cursor: pointer;
 }
 .topic .container .nodes .button.active{
   background-color: #f87b00;
@@ -135,5 +169,51 @@ export default {
 .topic .container .nodes .button a{
   color: #fff;
   text-decoration: none;
+}
+.topic .content .list{
+  height: 70px;
+  padding: 10px 15px;
+  box-sizing: border-box;
+  border-bottom: 1px solid #c2d5e3;
+  background-color: #f5faef;
+}
+.topic .content .list:hover{
+  background-color: #eeeeee;
+}
+.topic .content .list a{
+  color:#666;
+  text-decoration: none;
+}
+.topic .content .list .text{
+  display: flex;
+
+}
+.topic .content .list .text .img{
+  height: 49px;
+  width: 49px;
+}
+.topic .content .list .text .img img{
+  display: inline-block;
+  height: 100%;
+  width: 100%;
+}
+.topic .content .list .text .details{
+  flex: 1;
+  box-sizing: border-box;
+  padding-left: 15px;
+}
+.topic .content .list .text .details .title{
+  margin-bottom: 5px;
+}
+.topic .content .list .text .details .title a{
+  font-size: 15px;
+  color: #356DD0;
+}
+.topic .content .list .text .details .author{
+  font-size: 12px;
+  margin-top: 10px;
+}
+.topic .content .list .text .details .author a{
+  font-size: 12px;
 }
 </style>

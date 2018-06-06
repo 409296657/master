@@ -36,6 +36,25 @@ const util = {
 	  return reg.test(str)
 	},
 
+	formTimeToData:function(time){//计算发布文章到现在过了多长时间
+		let ot = time/1000;
+		let nt = new Date().getTime()/1000;
+		let t = nt - ot;
+		if (t<86400) {
+			let h = parseInt(t/3600)+1;
+			return "于"+h+"小时前发布";
+		}else if (t>=86400&&t<2592000) {
+			let d = parseInt(t/3600/24);
+			return "于"+d+"天前发布";
+		}else if (t>=2592000&&t<31104000) {
+			let m = parseInt(t/3600/24/30);
+			return "于"+m+"月前发布";
+		}else if (t>=31104000) {
+			let y = parseInt(t/3600/24/30/12);
+			return "于"+y+"年前发布";
+		}
+	}
+
 }
 
 export default util;
