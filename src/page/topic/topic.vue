@@ -32,6 +32,7 @@ export default {
     return{
       nodeid:1,
       nodeList:[],
+      access_token:'',
     }
   },
   methods:{
@@ -43,11 +44,44 @@ export default {
       url:'https://diycode.cc/api/v3/news/nodes.json',
     })
     .then((res)=>{
-      console.log(res)
+      // console.log(res)
       this.nodeList = res.data;
     })
     .catch((err)=>{
 
+    })
+    this.axios({
+      method:"POST",
+      url:'https://www.diycode.cc/oauth/token',
+      data:{
+        "client_id":"d1c3e2b5",
+        "client_secret":"ad07d3bb7b46ae281e2d637c93a2757a0f5882a80d677e2e1f2e7b7f61087026",
+        "grant_type":"password",
+        "password":"gaosan1407",
+        "username":"1342525283"
+      },
+    })
+    .then((res)=>{
+      // console.log(res)
+      this.access_token = res.data.access_token;
+    })
+    .catch((err)=>{
+
+    })
+    this.axios({
+      method:"GET",
+      url:'https://diycode.cc/api/v3/news.json',
+      params:{
+        "node_id":"",
+        "offset":"1",
+        "limit":'10',
+      },
+    })
+    .then((res)=>{
+      console.log(res)
+    })
+    .catch((err)=>{
+      console.log(err)
     })
   }
 }

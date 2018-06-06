@@ -11,7 +11,8 @@
       <form class="">
         <input type="text" name="" placeholder="请输入手机号码" v-model="mobile">
         <input type="password" name="" placeholder="请输入密码" v-model="psw">
-        <div>
+        <div class="check"><span>7天内自动登陆</span><el-checkbox v-model="save"></el-checkbox></div>
+        <div class="info">
           <router-link :to="{ name: ''}">忘记密码？</router-link>
           <router-link :to="{ name: 'register'}">注册账号</router-link>
         </div>
@@ -29,6 +30,7 @@ export default {
   name:'login',
   data(){
     return{
+      save:'',
       mobile:'',
       psw:'',
       centerDialogVisibleRegister: false,
@@ -48,10 +50,19 @@ export default {
       .then((res)=>{
         console.log(res)
         if(res.data.status==1){
-          this.centerDialogVisibleLogin = false
-          let userData = res.data.data[0];
-          this.common.setCookie('useInfo',userData,'30')
-          this.$emit("logining",[false,this.common.getCookie('useInfo')])
+          if (this.save) {
+            this.centerDialogVisibleLogin = false
+            let userData = res.data.data[0];
+            this.common.setCookie('useInfo',userData,'7')
+            this.$emit("logining",[true,this.common.getCookie('useInfo')])
+          }else{
+            this.centerDialogVisibleLogin = false
+            let userData = res.data.data[0];
+            sessionStorage.setItem("user",JSON.stringify(userData));
+            let user =JSON.parse(sessionStorage.getItem("user"));
+            this.$emit("logining",[true,user])
+          }
+
         }else{
           alert(res.data.info)
         }
@@ -66,7 +77,7 @@ export default {
 
 
 <style>
-.login div span{
+.login .info span{
   cursor: pointer;
 }
 .login .el-dialog{
@@ -87,7 +98,7 @@ export default {
   font-size: 16px;
   margin-bottom: 20px;
 }
-.login .el-dialog form div{
+.login .el-dialog form .info{
   width: 300px;
   display:flex;
   justify-content: space-between;
@@ -96,5 +107,10 @@ export default {
   color: inherit;
   text-decoration: none;
 }
+.login .check{
+  width: 115px !important;
+  margin-bottom: 5px;
+}
+
 
 </style>

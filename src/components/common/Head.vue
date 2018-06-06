@@ -7,7 +7,7 @@
             <router-link :to="{name:list.name}"><b>{{list.text}}</b></router-link>
           </li>
         </ul>
-        <div class="user" v-if="!land">
+        <div class="user" v-if="land">
           <el-dropdown>
             <span class="el-dropdown-link">
             <i class="el-icon-arrow-down el-icon--right"></i>{{userId}}
@@ -23,7 +23,7 @@
             </el-dropdown-menu>
           </el-dropdown>
         </div>
-        <div class="land" v-if="land">
+        <div class="land" v-else>
           <div class="login">
             <Login v-on:logining="change"></Login>
           </div>
@@ -49,7 +49,7 @@ export default {
   data(){
     return{
       userId:'',
-      land:true,
+      land:false,
       centerDialogVisibleRegister: false,
       centerDialogVisibleLogin: false,
       lists:[{text:'首页',name:'mainPage'},{text:'知识体系',name:'knowledgeStruct'},{text:'活动',name:'subject'},{text:'文章',name:'articles'},{text:'话题',name:'topic'}]
@@ -57,8 +57,12 @@ export default {
   },
   methods:{
     quit:function(){
-      this.common.deleteCookie('useInfo'),
-      this.land = true;
+      if(this.common.getCookie('useInfo')){
+        this.common.deleteCookie('useInfo')
+      }else if (sessionStorage.getItem("user")) {
+        sessionStorage.removeItem('user')
+      };
+      this.land = false;
       this.$router.push({name:'mainPage'})
     },
     change:function(data){
@@ -68,8 +72,12 @@ export default {
   },
   mounted(){
     if(this.common.getCookie('useInfo')){
-      this.land=false;
+      this.land=true;
       this.userId=this.common.getCookie('useInfo').nick_name;
+    }else if (sessionStorage.getItem("user")) {
+      this.land=true;
+      let user =JSON.parse(sessionStorage.getItem("user"));
+      this.userId = user.nick_name;
     }
   }
 }

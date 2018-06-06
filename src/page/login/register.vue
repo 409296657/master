@@ -106,7 +106,7 @@ export default {
             console.log(res)
             if(res.data.status==1){
               let userData = res.data.data;
-              this.common.setCookie('useID',userData.nick_name,'30');
+              this.common.setCookie('useInfo',userData,'30');
               alert(res.data.info);
               setTimeout(()=>{
                 this.$router.push({name:'mainPage'});
