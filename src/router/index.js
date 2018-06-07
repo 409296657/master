@@ -47,6 +47,10 @@ export default new Router({
       name: 'topic',
       component: Topic
     },{
+      path: '/topic/node:nodeid',
+      name: '',
+      component: Topic
+    },{
       path: '/register',
       name: 'register',
       component: Register

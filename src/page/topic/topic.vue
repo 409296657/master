@@ -5,9 +5,9 @@
       <el-main>
         <div class="container">
           <div class="nodes">
-            <div class="button" :class="{active:nodeid==''}" @click="nodeid=''">全部</div>
-            <div class="button" v-for="node in nodeList" :class="{active:node.id==nodeid}" @click="nodeid=node.id">
-              <router-link :to="{ path: 'topic/node'+node.id}">{{node.name}}</router-link>
+            <div class="button" :class="{active:!nodeid}" @click="select()">全部</div>
+            <div class="button" v-for="node in nodeList" :class="{active:node.id==nodeid}" @click="select(node)">
+              {{node.name}}
             </div>
           </div>
           <div class="content">
@@ -55,7 +55,7 @@ export default {
   },
   data(){
     return{
-      nodeid:'',
+      nodeid:this.$route.params.nodeid,
       nodeList:[],
       access_token:'',
       lists:[],
@@ -63,7 +63,46 @@ export default {
     }
   },
   methods:{
+    select:function(node){
+      let nodeid=node?node.id:'';
+      if (nodeid) {
+        this.$router.push({path:'/topic/node'+nodeid})
+      }else {
+        this.$router.push({path:'/topic/'+nodeid})
+      }
 
+      this.nodeid = node?node.id:'';
+      this.ajax()
+    },
+    ajax:function(){
+      this.axios({
+        method:"GET",
+        url:'https://diycode.cc/api/v3/news.json',
+        params:{
+          "node_id":this.$route.params.nodeid,
+          "offset":"",
+          "limit":'20',
+        },
+      })
+      .then((res)=>{
+        console.log(res)
+        this.lists = res.data;
+        for (var i = 0; i < res.data.length; i++) {
+          if (res.data[i].replied_at) {
+            let t = res.data[i].replied_at;
+            let rt = this.common.replyTimeToData(t);
+            this.formTimeToData[i]=rt;
+          }else {
+            let t = res.data[i].created_at;
+            let rt = this.common.formTimeToData(t);
+            this.formTimeToData[i]=rt;
+          }
+        }
+      })
+      .catch((err)=>{
+
+      })
+    }
   },
   mounted(){
     this.axios({
@@ -71,7 +110,7 @@ export default {
       url:'https://diycode.cc/api/v3/news/nodes.json',
     })
     .then((res)=>{
-      // console.log(res)
+      console.log(res)
       this.nodeList = res.data;
     })
     .catch((err)=>{
@@ -95,33 +134,8 @@ export default {
     .catch((err)=>{
 
     })
-    this.axios({
-      method:"GET",
-      url:'https://diycode.cc/api/v3/news.json',
-      params:{
-        "node_id":"",
-        "offset":"",
-        "limit":'20',
-      },
-    })
-    .then((res)=>{
-      console.log(res)
-      this.lists = res.data;
-      for (var i = 0; i < res.data.length; i++) {
-        if (res.data[i].replied_at) {
-          let t = res.data[i].replied_at;
-          let rt = this.common.replyTimeToData(t);
-          this.formTimeToData[i]=rt;
-        }else {
-          let t = res.data[i].created_at;
-          let rt = this.common.formTimeToData(t);
-          this.formTimeToData[i]=rt;
-        }
-      }
-    })
-    .catch((err)=>{
-      console.log(err)
-    })
+
+    this.ajax()
   }
 }
 </script>
