@@ -24,6 +24,9 @@
                     {{formTimeToData[index]}}
                   </div>
                 </div>
+                <div class="tips" v-if="list.replied_at">
+                  {{list.replies_count}}
+                </div>
               </div>
             </div>
           </div>
@@ -105,10 +108,15 @@ export default {
       console.log(res)
       this.lists = res.data;
       for (var i = 0; i < res.data.length; i++) {
-        let tt = res.data[i].created_at;
-        let t = Date.parse(tt);
-        let rt = this.common.formTimeToData(t);
-        this.formTimeToData[i]=rt;
+        if (res.data[i].replied_at) {
+          let t = res.data[i].replied_at;
+          let rt = this.common.replyTimeToData(t);
+          this.formTimeToData[i]=rt;
+        }else {
+          let t = res.data[i].created_at;
+          let rt = this.common.formTimeToData(t);
+          this.formTimeToData[i]=rt;
+        }
       }
     })
     .catch((err)=>{
@@ -215,5 +223,16 @@ export default {
 }
 .topic .content .list .text .details .author a{
   font-size: 12px;
+}
+.topic .content .list .text .tips{
+  width: 30px;
+  height: 16px;
+  border-radius: 8px;
+  background-color: #aaaaaa;
+  color: #fff;
+  margin: auto 0;
+  font-size: 14px;
+  line-height: 16px;
+  text-align: center;
 }
 </style>
