@@ -45,12 +45,18 @@ export default new Router({
     },{
       path: '/topic',
       name: 'topic',
-      component: Topic
-    },{
+      component: Topic,
+    },
+    {
       path: '/topic/node:nodeid',
       name: '',
       component: Topic
     },{
+      path: '/topic/node:nodeid/page:pagenum',
+      name: '',
+      component: Topic
+    },
+    {
       path: '/register',
       name: 'register',
       component: Register

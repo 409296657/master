@@ -31,7 +31,10 @@
             </div>
           </div>
           <el-pagination
-            layout="prev, pager, next"
+            @current-change="handleCurrentChange"
+            :current-page.sync="currentPage"
+            :page-size="100"
+            layout="prev, pager, next, jumper"
             :total="1000">
           </el-pagination>
         </div>
@@ -60,9 +63,19 @@ export default {
       access_token:'',
       lists:[],
       formTimeToData:[],
+      currentPage: this.$route.params.pagenum,
     }
   },
   methods:{
+    handleCurrentChange(val) {
+      console.log(val);
+      let nodeid = this.nodeid?this.nodeid:'';
+      if (nodeid) {
+        this.$router.push({path:'/topic/node'+nodeid+'/page'+val})
+      }else {
+        this.$router.push({path:'/topic/page'+val})
+      }
+    },
     select:function(node){
       let nodeid=node?node.id:'';
       if (nodeid) {
@@ -70,8 +83,8 @@ export default {
       }else {
         this.$router.push({path:'/topic/'+nodeid})
       }
-
       this.nodeid = node?node.id:'';
+      this.currentPage = 1;
       this.ajax()
     },
     ajax:function(){
@@ -110,7 +123,7 @@ export default {
       url:'https://diycode.cc/api/v3/news/nodes.json',
     })
     .then((res)=>{
-      console.log(res)
+      // console.log(res)
       this.nodeList = res.data;
     })
     .catch((err)=>{
