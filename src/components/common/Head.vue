@@ -4,7 +4,7 @@
       <div class="navbar">
         <ul>
           <li v-for='(list,index) in lists' :class="{active:index==isActive}" >
-            <router-link :to="{name:list.name}"><b>{{list.text}}</b></router-link>
+            <router-link :to="{path:'/'+list.name}"><b>{{list.text}}</b></router-link>
           </li>
         </ul>
         <div class="user" v-if="land">
@@ -52,7 +52,7 @@ export default {
       land:false,
       centerDialogVisibleRegister: false,
       centerDialogVisibleLogin: false,
-      lists:[{text:'首页',name:'mainPage'},{text:'知识体系',name:'knowledgeStruct'},{text:'活动',name:'subject'},{text:'文章',name:'articles'},{text:'话题',name:'topic'}]
+      lists:[{text:'首页',name:''},{text:'知识体系',name:'knowledgeStruct'},{text:'话题',name:'topic'},{text:'文章',name:'articles'},{text:'活动',name:'subject'}]
     }
   },
   methods:{

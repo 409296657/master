@@ -1,7 +1,7 @@
 <template lang="html">
   <div class="topic">
     <el-container>
-      <el-header height="80px"><Head isActive="4"></Head></el-header>
+      <el-header height="80px"><Head isActive="2"></Head></el-header>
       <el-main>
         <div class="container">
           <div class="nodes">
@@ -11,13 +11,15 @@
             </div>
           </div>
           <div class="content">
-            <div class="list" v-for="(list,index) in lists">
+            <div class="list" v-for="(list,index) in lists" @click="comment(list)">
               <div class="text">
                 <div class="img">
                   <img :src="list.user.avatar_url">
                 </div>
                 <div class="details">
-                  <div class="title"><a :href="list.address" target="_Blank">{{list.title}}</a></div>
+                  <div class="title">
+                    <a :href="list.address" target="_Blank" @click.stop="doThis">{{list.title}}</a>
+                  </div>
                   <div class="author">
                     <router-link :to="{ name: '', params: {} }">{{list.node_name}}</router-link>&nbsp;·&nbsp;
                     <router-link :to="{ name: '', params: {} }">{{list.user.login}}</router-link>&nbsp;·&nbsp;
@@ -67,6 +69,10 @@ export default {
     }
   },
   methods:{
+    comment:function(list){
+      console.log(list)
+      this.$router.push({path:'topic/'+list.id})
+    },
     handleCurrentChange(val) {
       console.log(val);
       let nodeid = this.nodeid?this.nodeid:'';
@@ -74,14 +80,15 @@ export default {
         this.$router.push({path:'/topic/node'+nodeid+'/page'+val})
       }else {
         this.$router.push({path:'/topic/page'+val})
-      }
+      };
+      this.ajax()
     },
     select:function(node){
       let nodeid=node?node.id:'';
       if (nodeid) {
         this.$router.push({path:'/topic/node'+nodeid})
       }else {
-        this.$router.push({path:'/topic/'+nodeid})
+        this.$router.push({path:'/topic'})
       }
       this.nodeid = node?node.id:'';
       this.currentPage = 1;
@@ -93,7 +100,7 @@ export default {
         url:'https://diycode.cc/api/v3/news.json',
         params:{
           "node_id":this.$route.params.nodeid,
-          "offset":"",
+          "offset":this.$route.params.pagenum?((this.$route.params.pagenum-1)*20):'',
           "limit":'20',
         },
       })
@@ -211,6 +218,7 @@ export default {
   box-sizing: border-box;
   border-bottom: 1px solid #c2d5e3;
   background-color: #f5faef;
+  cursor: pointer;
 }
 .topic .content .list:hover{
   background-color: #eeeeee;
