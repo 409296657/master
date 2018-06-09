@@ -5,24 +5,31 @@
       <el-main>
         <div class="container">
           <div class="content">
-            <div class="list">
-              <div class="text">
-                <div class="img">
-                  <img src="">
-                </div>
-                <div class="details">
-                  <div class="title"><a href="" target="_Blank">22</a></div>
-                  <div class="author">
-                    <router-link :to="{ name: '', params: {} }">22</router-link>&nbsp;·&nbsp;
-                    <router-link :to="{ name: '', params: {} }">22</router-link>&nbsp;·&nbsp;
-                    22
+
+            <div class="comment" v-if="commentList">
+              <div class="num">共收到{{num}}条回复</div>
+              <div class="list" v-for="(comment,index) in commentList">
+                <div class="text">
+                  <div class="img">
+                    <img :src="comment.user.avatar_url">
+                  </div>
+                  <div class="details">
+                    <div class="author">
+                      <router-link :to="{ name: '', params: {} }">{{comment.user.login}}</router-link>&nbsp;·&nbsp;
+                      <router-link :to="{ name: '', params: {} }">#{{index+1}}</router-link>&nbsp;·&nbsp;
+                      {{commentTime[index]}}
+                    </div>
+                    <div class="answer" v-html="comment.body_html">{{comment.body_html}}</div>
                   </div>
                 </div>
-                <!-- <div class="tips" v-if="list.replied_at">
-                  {{list.replies_count}}
-                </div> -->
               </div>
             </div>
+            <div class="comment" v-else>
+              <div class="none">
+                暂无回复
+              </div>
+            </div>
+
           </div>
 
         </div>
@@ -46,29 +53,41 @@ export default {
   },
   data(){
     return{
-
+      commentList:'',
+      num:0,
+      commentTime:[],
     }
   },
   methods:{
-    ajax:function(){
-      this.axios({
-        method:"GET",
-        url:'https://diycode.cc/api/v3/news/'+this.$route.params.id+'/replies.json',
-        params:{
-          "offset":'',
-          "limit":'20',
-        },
-      })
-      .then((res)=>{
-        console.log(res)
-      })
-      .catch((err)=>{
 
-      })
-    }
   },
   mounted(){
-    this.ajax()
+    this.axios({
+      method:"GET",
+      url:'https://diycode.cc/api/v3/news/'+this.$route.params.id+'/replies.json',
+      params:{
+        "offset":'',
+        "limit":'20',
+      },
+    })
+    .then((res)=>{
+      console.log(res)
+      if (res.data.length!==0) {
+        this.commentList = res.data;
+        this.num = res.data.length;
+        for (var i = 0; i < res.data.length; i++) {
+          let time = res.data[i].updated_at;
+          this.commentTime[i]=this.common.replyTimeToData(time)
+        }
+      }else {
+
+      }
+    })
+    .catch((err)=>{
+
+    })
+
+
   }
 }
 </script>
@@ -100,38 +119,11 @@ export default {
 .news #tab-first{
   margin-right: 30px;
 }
-.news .container .nodes{
-  padding: 20px 15px;
-  background-color: #f9f9f9;
-  border-bottom: 1px solid #c2d5e3;
-}
-.news .container .nodes .button{
-  display: inline-block;
-  padding: 0 10px;
-  height: 20px;
-  font-size: 14px;
-  line-height: 20px;
-  background-color: #aab5c3;
-  border-radius: 10px;
-  margin-right: 15px;
-  margin-bottom: 15px;
-  color: #fff;
-  cursor: pointer;
-}
-.news .container .nodes .button.active{
-  background-color: #f87b00;
-}
-.news .container .nodes .button a{
-  color: #fff;
-  text-decoration: none;
-}
 .news .content .list{
-  height: 70px;
   padding: 10px 15px;
   box-sizing: border-box;
   border-bottom: 1px solid #c2d5e3;
   background-color: #f5faef;
-  cursor: pointer;
 }
 .news .content .list:hover{
   background-color: #eeeeee;
@@ -167,7 +159,7 @@ export default {
 }
 .news .content .list .text .details .author{
   font-size: 12px;
-  margin-top: 10px;
+  margin-top: 0px;
 }
 .news .content .list .text .details .author a{
   font-size: 12px;
@@ -183,4 +175,20 @@ export default {
   line-height: 16px;
   text-align: center;
 }
+.news .content .comment{
+  background-color: #f5faef;
+  margin-top: 50px;
+}
+.news .content .comment .num{
+  height: 40px;
+  line-height: 40px;
+  border-bottom: 1px solid #c2d5e3;
+}
+.news .content .comment .none{
+  height: 50px;
+  line-height: 50px;
+  font-size: 20px;
+  text-align: center;
+}
+
 </style>

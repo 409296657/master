@@ -23,6 +23,7 @@
                   <div class="author">
                     <router-link :to="{ name: '', params: {} }">{{list.node_name}}</router-link>&nbsp;·&nbsp;
                     <router-link :to="{ name: '', params: {} }">{{list.user.login}}</router-link>&nbsp;·&nbsp;
+                    <span v-if="list.last_reply_user_login">最后由{{list.last_reply_user_login}}</span>
                     {{formTimeToData[index]}}
                   </div>
                 </div>
@@ -70,11 +71,9 @@ export default {
   },
   methods:{
     comment:function(list){
-      console.log(list)
-      this.$router.push({path:'topic/'+list.id})
+      this.$router.push({path:'/topic/'+list.id})
     },
     handleCurrentChange(val) {
-      console.log(val);
       let nodeid = this.nodeid?this.nodeid:'';
       if (nodeid) {
         this.$router.push({path:'/topic/node'+nodeid+'/page'+val})
@@ -105,7 +104,6 @@ export default {
         },
       })
       .then((res)=>{
-        console.log(res)
         this.lists = res.data;
         for (var i = 0; i < res.data.length; i++) {
           if (res.data[i].replied_at) {

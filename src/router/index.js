@@ -42,7 +42,8 @@ export default new Router({
       path: '/subject',
       name: 'subject',
       component: Subject
-    },{
+    },
+    {
       path: '/topic',
       name: 'topic',
       component: Topic,
@@ -54,7 +55,8 @@ export default new Router({
       path: '/topic/page:pagenum',
       name: '',
       component: Topic
-    },{
+    },
+    {
       path: '/topic/node:nodeid/page:pagenum',
       name: '',
       component: Topic
