@@ -11,23 +11,23 @@
             </div>
           </div>
           <div class="content">
-            <div class="list" v-for="(list,index) in lists" @click="comment(list)">
+            <div class="list" v-for="(list,index) in lists">
               <div class="text">
                 <div class="img">
                   <img :src="list.user.avatar_url">
                 </div>
                 <div class="details">
                   <div class="title">
-                    <a :href="list.address" target="_Blank" @click.stop="doThis">{{list.title}}</a>
+                    <a :href="list.address" target="_Blank">{{list.title}}</a>
                   </div>
                   <div class="author">
-                    <router-link :to="{ name: '', params: {} }">{{list.node_name}}</router-link>&nbsp;·&nbsp;
+                    <span @click="selectNode(list)">{{list.node_name}}</span>&nbsp;·&nbsp;
                     <router-link :to="{ name: '', params: {} }">{{list.user.login}}</router-link>&nbsp;·&nbsp;
                     <span v-if="list.last_reply_user_login">最后由{{list.last_reply_user_login}}</span>
                     {{formTimeToData[index]}}
                   </div>
                 </div>
-                <div class="tips" v-if="list.replied_at">
+                <div class="tips" v-if="list.replied_at" @click="comment(list)">
                   {{list.replies_count}}
                 </div>
               </div>
@@ -70,6 +70,11 @@ export default {
     }
   },
   methods:{
+    selectNode:function(list){
+      this.$router.push({path:'/topic/node'+list.node_id})
+      this.nodeid=list.node_id;
+      this.ajax();
+    },
     comment:function(list){
       this.$router.push({path:'/topic/'+list.id})
     },
@@ -104,6 +109,7 @@ export default {
         },
       })
       .then((res)=>{
+        console.log(res)
         this.lists = res.data;
         for (var i = 0; i < res.data.length; i++) {
           if (res.data[i].replied_at) {
@@ -216,7 +222,6 @@ export default {
   box-sizing: border-box;
   border-bottom: 1px solid #c2d5e3;
   background-color: #f5faef;
-  cursor: pointer;
 }
 .topic .content .list:hover{
   background-color: #eeeeee;
@@ -253,6 +258,9 @@ export default {
 .topic .content .list .text .details .author{
   font-size: 12px;
   margin-top: 10px;
+}
+.topic .content .list .text .details .author span{
+  cursor: pointer;
 }
 .topic .content .list .text .details .author a{
   font-size: 12px;
