@@ -5,6 +5,7 @@ import KnowledgeCard from '@/page/knowledgeStruct/knowledgeCard'
 import MainPage from '@/page/mainPage/mainPage'
 import Article from '@/page/article/article'
 import Subject from '@/page/subject/subject'
+import Talks from '@/page/subject/talks'
 import Topic from '@/page/topic/topic'
 import News from '@/page/topic/news'
 import Register from '@/page/login/register'
@@ -39,11 +40,17 @@ export default new Router({
       name: 'articles',
       component: Article
     },{
-      path: '/subject',
+      path: '/subject/page:page',
       name: 'subject',
       component: Subject
-    },
-    {
+    },{
+      path: '/subject',
+      redirect:'/subject/page1'
+    },{
+      path: '/subject/:id',
+      name: '',
+      component: Talks
+    },{
       path: '/topic',
       name: 'topic',
       component: Topic,
@@ -55,8 +62,7 @@ export default new Router({
       path: '/topic/page:pagenum',
       name: '',
       component: Topic
-    },
-    {
+    },{
       path: '/topic/node:nodeid/page:pagenum',
       name: '',
       component: Topic

@@ -116,11 +116,15 @@ export default {
             let t = res.data[i].replied_at;
             let rt = this.common.replyTimeToData(t);
             this.formTimeToData[i]=rt;
-          }else {
-            let t = res.data[i].created_at;
-            let rt = this.common.formTimeToData(t);
-            this.formTimeToData[i]=rt;
-          }
+          }else if (res.data[i].updated_at)  {
+              let t = res.data[i].updated_at;
+              let rt = this.common.updataTimeToData(t)
+              this.formTimeToData[i]=rt;
+            }else {
+              let t = res.data[i].created_at;
+              let rt = this.common.formTimeToData(t);
+              this.formTimeToData[i]=rt;
+            }
         }
       })
       .catch((err)=>{

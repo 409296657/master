@@ -92,6 +92,7 @@ export default {
   width: 100%;
   font-size: 18px;
   display: flex;
+  background-color: #fff;
 }
 
 .head .navbar{
